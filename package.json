@@ -1,0 +1,19 @@
+{
+  "name": "geeksandclicks-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaarstthenn-21/BackendGeeksAndClicks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kaarstthenn-21/BackendGeeksAndClicks/issues"
+  },
+  "homepage": "https://github.com/Kaarstthenn-21/BackendGeeksAndClicks#readme"
+}
