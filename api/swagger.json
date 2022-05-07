@@ -1,4 +1,4 @@
-{
+{"swaggerDefinition":{
   "swagger": "2.0",
   "info": {
     "description": "Backend of enterprise Geeks and Clicks",
@@ -11,6 +11,10 @@
     {
       "name": "user",
       "description": "Operations about user"
+    },
+    {
+      "name": "auth",
+      "description": "Operations about auth"
     }
   ],
   "schemes": [
@@ -57,6 +61,35 @@
           }
         }
       }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Auth user",
+        "description": "Auth is user",
+        "operationId": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body", 
+            "description": "Auth is user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
@@ -90,6 +123,17 @@
         }
       }
     },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
     "ApiResponse": {
       "type": "object",
       "properties": {
@@ -110,4 +154,6 @@
     "description": "Find out more about Swagger",
     "url": "http://swagger.io"
   }
+},
+"apis":["index.js"]
 }
