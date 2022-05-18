@@ -1,6 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const Error = require('../utils/error');
 const secret = config.jwt.secret;
 
 function sign(data) {
@@ -15,7 +16,7 @@ const check = {
     own: function (req, owner) {
         const decoded = decodeHeader(req);
         if (decoded.id !== owner) {
-            throw new Error('No tienes permisos de edicion');
+            throw Error('No tienes permisos de edicion', 401);
         }
     },
 }

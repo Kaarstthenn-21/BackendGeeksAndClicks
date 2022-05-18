@@ -9,9 +9,11 @@ module.exports = function (injectedStore) {
     if (!store) {
         store = require('../../../store/dummy');
     }
+
     function list() {
         return injectedStore.list(TABLA);
     }
+    
     function get(id) {
         return injectedStore.get(TABLA, id);
     }
@@ -24,8 +26,8 @@ module.exports = function (injectedStore) {
         }
         if (body.id) {
             user.id = body.id;
-        } else {
-            user.id = nanoid();
+        }else{
+            user.id = null;
         }
 
         if (body.password || body.username) {

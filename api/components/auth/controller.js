@@ -6,11 +6,13 @@ const TABLA = 'auth';
 module.exports = function (injectedStore) {
     let store = injectedStore;
     if (!store) {
-        store = require('../../../store/dummy');
+        store = require('../../../store/mysql');
     }
 
     async function login(username, password) {
+        
         const data = await store.query(TABLA, { username: username });
+        
         return bcrypt.compare(password, data.password)
             .then(identicated => {
                 if (identicated) {
