@@ -19,6 +19,9 @@ const check = {
             throw Error('No tienes permisos de edicion', 401);
         }
     },
+    logged: function (req, owner) {
+        const decoded = decodeHeader(req);
+    },
 }
 function getToken(authorization) {
     //Bearer token

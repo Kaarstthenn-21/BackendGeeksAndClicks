@@ -1,6 +1,7 @@
 //acceso a almacenamiento de datos
-const { nanoid } = require('nanoid')
-const auth = require('../auth/index');
+const { is } = require('express/lib/request');
+const { nanoid } = require('nanoid');
+const auth = require('../auth/');
 
 const TABLA = 'user';
 
@@ -20,14 +21,21 @@ module.exports = function (injectedStore) {
 
     async function upsert(body) {
 
+        
+
         const user = {
             name: body.name,
-            username: body.username,
+            username: body.username
+            
         }
+        var isnuevo;
         if (body.id) {
             user.id = body.id;
+            isnuevo = false;
+            //get(TABLA, body.id).then(val => console.log(val));
         }else{
-            user.id = null;
+            user.id = nanoid();
+            isnuevo = true;
         }
 
         if (body.password || body.username) {
@@ -37,8 +45,8 @@ module.exports = function (injectedStore) {
                 password: body.password
             })
         }
-
-        return store.upsert(TABLA, user);
+        console.log(isnuevo);
+        return store.upsert(TABLA, user, isnuevo);
     };
 
     function remove(id) {
@@ -47,5 +55,22 @@ module.exports = function (injectedStore) {
         }
         return injectedStore.remove(TABLA, id);
     }
-    return { list, get, upsert, remove };
+
+    function follow(from, to) {
+        return store.upsert(TABLA + '_follow', {
+            user_from: from,
+            user_to: to,
+        });
+    }
+
+    async function following(user){
+        const join={}
+        join[TABLA]='user_to';//{user:'user_to'}
+        const query={user_from:user};
+        return await store.query(TABLA+'_follow',query,join);
+    }
+
+
+
+    return { list, get, upsert, remove, follow,following};
 };

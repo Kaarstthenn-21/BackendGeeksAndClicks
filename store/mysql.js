@@ -7,7 +7,8 @@ const dbconfig = {
     host: config.mysql.host,
     user: config.mysql.user,
     password: config.mysql.password,
-    database: config.mysql.database
+    database: config.mysql.database,
+    port: config.mysql.port,
 };
 
 //Connection
@@ -42,7 +43,7 @@ handleCon();
 function list(table, id) {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT * FROM ${table}`, (err, data) => {
-            if (err) return reject(error);
+            if (err) return reject(err);
             resolve(data);
         });
     })
@@ -50,7 +51,7 @@ function list(table, id) {
 
 function get(table, id) {
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM ${table} WHERE id = ${id}`, (err, data) => {
+        connection.query(`SELECT * FROM ${table} WHERE id = '${id}'`, (err, data) => {
             if (err) return reject(err);
             resolve(data);
         });
@@ -67,14 +68,15 @@ function insert(table, data) {
     })
 }
 
-async function upsert(table, data) {
-    const result = await get(table, data.id);
-    if (result.length < 1) {
+function upsert(table, data, isNew =true){
+    //get(table, data.id).then(val => console.log(val));
+    if(data && isNew){
         return insert(table, data);
-    } else {
+    }else{
         return update(table, data);
     }
 }
+
 function update(table, data) {
     return new Promise((resolve, reject) => {
         connection.query(`UPDATE ${table} SET ? WHERE id=?`, [data, data.id], (err, result) => {
@@ -84,22 +86,18 @@ function update(table, data) {
     })
 }
 
-function query(table, query){
+function query(table, query, join) {
+    let joinQuery = '';
+    if (join) {
+        const key = Object.keys(join)[0];
+        const val = join[key];
+        joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
+    }
+
     return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM ${table} WHERE ?`, query,(error, result)=>{
-            if(error) return reject(error)
-            
-            if(result == null){
-                reject('No existe el usuario');
-            }
-            // Necesario para evitar el rowdatapacket
-            let output = {
-                id: result[0].id,
-                username: result[0].username,
-                password: result[0].password
-            }
-            
-            resolve(output, null)
+        connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`, query, (err, res) => {
+            if (err) return reject(err);
+            resolve(res[0] || null);
         })
     })
 }

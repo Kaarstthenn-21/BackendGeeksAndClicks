@@ -6,9 +6,10 @@ module.exports = {
         secret: process.env.JWT_SECRET || 'kaarstthenn',
     },
     mysql: {
-        host: process.env.MYSQL_HOST || 'sql10.freemysqlhosting.net',        
-        user: process.env.MYSQL_USER || 'sql10491487',
-        password: process.env.MYSQL_PASS || 'rJN7nGcgFU',
-        database: process.env.MYSQL_DB || 'sql10491487',
+        host: process.env.MYSQL_HOST || 'localhost',        
+        user: process.env.MYSQL_USER || 'root',
+        password: process.env.MYSQL_PASS || 'root',
+        database: process.env.MYSQL_DB || 'GeeksandClicks',
+        port: process.env.PORT || '33060',
     }
 }
