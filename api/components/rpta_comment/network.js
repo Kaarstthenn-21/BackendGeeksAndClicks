@@ -7,10 +7,8 @@ const router = express.Router();
 
 // Routes
 router.get('/', list);
-router.post("/", upsert);
-router.get("/categoria/", getcampo);
-router.get("/tipo/", getCampoTipo);
-router.get("/tipocategoria/", getTipoCategoria);
+router.post('/', upsert);
+router.get("/comment/", getcampo);
 // functions
 function list(req, res, next) {
     Controller.list()
@@ -31,24 +29,7 @@ function upsert(req, res, next) {
 
   function getcampo(req, res, next) {
     Controller
-        .getCampoCategoria(req.query.categoria)
-        .then((data) => {
-        response.success(req, res, data, 200);
-      })
-      .catch(next);
-  }
-
-  function getCampoTipo(req, res, next) {
-    Controller
-        .getCampoTipo(req.query.tipo)
-        .then((data) => {
-        response.success(req, res, data, 200);
-      })
-      .catch(next);
-  }
-  function getTipoCategoria(req, res, next) {
-    Controller
-        .getTipoCategoria(req.query.tipo, req.query.categoria)
+      .getcampo(req.query.comment)
         .then((data) => {
         response.success(req, res, data, 200);
       })

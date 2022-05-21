@@ -58,6 +58,23 @@ function get(table, id) {
     })
 }
 
+function getcampo(table, campo , columna) {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM ${table} WHERE ${columna} = '${campo}'`, (err, data) => {
+            if (err) return reject(err);
+            resolve(data);
+        });
+    })
+}
+
+function getTipoCategoria(table, tipo, categoria) {
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT * FROM ${table} WHERE tipo = '${tipo}' AND categoria = '${categoria}' `, (err, data) => {
+            if (err) return reject(err);
+            resolve(data);
+        });
+    })
+}
 
 function insert(table, data) {
     return new Promise((resolve, reject) => {
@@ -68,9 +85,12 @@ function insert(table, data) {
     })
 }
 
-function upsert(table, data, isNew =true){
+function upsert(table, data, isnuevo){
     //get(table, data.id).then(val => console.log(val));
-    if(data && isNew){
+    console.log("Datos");
+    console.log(isnuevo);
+    console.log(data);
+    if(data && isnuevo){
         return insert(table, data);
     }else{
         return update(table, data);
@@ -106,5 +126,7 @@ module.exports = {
     list,
     get,
     upsert,
-    query
+    query,
+    getcampo,
+    getTipoCategoria
 }

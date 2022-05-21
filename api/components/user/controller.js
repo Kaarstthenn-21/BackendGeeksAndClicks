@@ -1,8 +1,9 @@
 //acceso a almacenamiento de datos
 const { is } = require('express/lib/request');
 const { nanoid } = require('nanoid');
+const { uploadImage } = require('../../../utils/cloudinary');
 const auth = require('../auth/');
-
+const fse = require('fs-extra');
 const TABLA = 'user';
 
 module.exports = function (injectedStore) {
@@ -19,33 +20,43 @@ module.exports = function (injectedStore) {
         return injectedStore.get(TABLA, id);
     }
 
-    async function upsert(body) {
-
-        
+    async function upsert(body,image) {
 
         const user = {
+            id: '',
             name: body.name,
-            username: body.username
-            
+            username: body.username,
+            imagen: 'https://res.cloudinary.com/riacrdo2/image/upload/v1653087107/default/user_ztsbhy.png'
+        }
+        if (image) {
+            const result = await uploadImage(image.tempFilePath);
+            user.imagen = result.url;
+            console.log(result.url);
+            await fse.removeSync(image.tempFilePath);
         }
         var isnuevo;
         if (body.id) {
+            console.log("se envio el id");
+            console.log(body);
             user.id = body.id;
             isnuevo = false;
+            console.log(isnuevo);
             //get(TABLA, body.id).then(val => console.log(val));
+
         }else{
             user.id = nanoid();
             isnuevo = true;
+            if (body.password || body.username) {
+                await auth.upsert({
+                    id: user.id,
+                    username: user.username,
+                    password: body.password
+                })
+            }
         }
+        //console.log(isnuevo);
+        console.log(user);
 
-        if (body.password || body.username) {
-            await auth.upsert({
-                id: user.id,
-                username: user.username,
-                password: body.password
-            })
-        }
-        console.log(isnuevo);
         return store.upsert(TABLA, user, isnuevo);
     };
 

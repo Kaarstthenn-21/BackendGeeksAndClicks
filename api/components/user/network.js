@@ -33,7 +33,7 @@ function get(req, res, next) {
 
 function upsert(req, res, next) {
   controller
-    .upsert(req.body)
+    .upsert(req.body , req.files?.image)
     .then((user) => {
       response.success(req, res, user, 201);
     })
