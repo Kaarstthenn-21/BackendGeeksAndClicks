@@ -17,6 +17,7 @@ module.exports = function (injectedStore) {
     }
 
     function getUserName(username) {
+        console.log("sdds");
         return injectedStore.getcampo(TABLA, username, 'username');
     }
     
@@ -87,5 +88,5 @@ module.exports = function (injectedStore) {
 
 
 
-    return { list, get, upsert, remove, follow,following,getUserName};
+    return { list, get, upsert, remove, follow,following,getUserName,};
 };
