@@ -7,11 +7,11 @@ const router = express.Router();
 
 router.get("/", list);
 router.post("/follow/:id", secure("follow"), follow);
-router.get('/:id/followers', secure('follow'), followers)
+router.get('/:id/followers', secure('follow'), followers);
 router.get("/:id", get);
 router.post("/", upsert);
 router.put("/", secure("update"), upsert);
-router.get("/username/", getUserName);
+router.get('/usuario/username/', getUserName);
 
 // Internal Functions
 function list(req, res, next) {
@@ -50,8 +50,6 @@ function upsert(req, res, next) {
 //     });
 // }
 
-
-
 function follow(req, res, next) {
   controller
     .follow(req.user.id, req.params.id)
@@ -70,8 +68,7 @@ function followers (req, res, next) {
 }
 
 function getUserName(req, res, next) {
-  controller
-      .getCampoCategoria(req.query.username)
+  controller.getUserName(req.query.usuario)
       .then((data) => {
       response.success(req, res, data, 200);
     })
