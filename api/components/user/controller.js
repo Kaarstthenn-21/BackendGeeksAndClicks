@@ -15,6 +15,10 @@ module.exports = function (injectedStore) {
     function list() {
         return injectedStore.list(TABLA);
     }
+
+    function getUserName(username) {
+        return injectedStore.getcampo(TABLA, username, 'username');
+    }
     
     function get(id) {
         return injectedStore.get(TABLA, id);
@@ -83,5 +87,5 @@ module.exports = function (injectedStore) {
 
 
 
-    return { list, get, upsert, remove, follow,following};
+    return { list, get, upsert, remove, follow,following,getUserName};
 };

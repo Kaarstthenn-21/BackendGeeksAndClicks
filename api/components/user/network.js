@@ -11,6 +11,7 @@ router.get('/:id/followers', secure('follow'), followers)
 router.get("/:id", get);
 router.post("/", upsert);
 router.put("/", secure("update"), upsert);
+router.get("/username/", getUserName);
 
 // Internal Functions
 function list(req, res, next) {
@@ -66,6 +67,15 @@ function followers (req, res, next) {
       response.success(req, res, data, 201)
     })
     .catch(next)
+}
+
+function getUserName(req, res, next) {
+  controller
+      .getCampoCategoria(req.query.username)
+      .then((data) => {
+      response.success(req, res, data, 200);
+    })
+    .catch(next);
 }
 
 module.exports = router;
