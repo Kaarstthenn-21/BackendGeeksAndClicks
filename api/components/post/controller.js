@@ -1,5 +1,7 @@
 const TABLA = 'post';
 const { nanoid } = require('nanoid');
+const fse = require('fs-extra');
+const { uploadImage } = require('../../../utils/cloudinary');
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
@@ -11,17 +13,17 @@ module.exports = function (injectedStore) {
         return store.list(TABLA);
     }
 
-    function upsert(body) {
+    async function upsert(body, image) {
 
         const post = {
             id: '',
             text: body.text,
             user: body.user,
             titulo: body.titulo,
-            tipo: body.tipo,
+            tipo: 1,
             imagen: 'https://res.cloudinary.com/riacrdo2/image/upload/v1653087112/default/informaticaDefault_uxbsle.jpg',
-            video: body.video,
-            categoria: body.categoria
+            categoria: body.categoria,
+            video: ''
         }
         var isnuevo;
         if (body.id) {
@@ -32,8 +34,15 @@ module.exports = function (injectedStore) {
             isnuevo = true;
         }
 
-        if (body.imagen) {
-            post.imagen = body.imagen;
+        if(body.video){
+            post.video = body.video;
+        }
+
+        if (image) {
+            const result = await uploadImage(image.tempFilePath);
+            post.imagen = result.url;
+            console.log(result.url);
+            await fse.removeSync(image.tempFilePath);
         }
         return store.upsert(TABLA, post, isnuevo);
     }

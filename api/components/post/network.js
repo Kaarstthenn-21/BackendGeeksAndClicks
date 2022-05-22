@@ -22,7 +22,7 @@ function list(req, res, next) {
 
 function upsert(req, res, next) {
     Controller
-      .upsert(req.body)
+      .upsert(req.body, req.files?.image)
       .then((data) => {
         response.success(req, res, data, 201);
       })
