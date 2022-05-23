@@ -11,6 +11,7 @@ router.post("/", upsert);
 router.get("/categoria/", getcampo);
 router.get("/tipo/", getCampoTipo);
 router.get("/tipocategoria/", getTipoCategoria);
+router.get("/user/", getCampoUser);
 // functions
 function list(req, res, next) {
     Controller.list()
@@ -49,6 +50,15 @@ function upsert(req, res, next) {
   function getTipoCategoria(req, res, next) {
     Controller
         .getTipoCategoria(req.query.tipo, req.query.categoria)
+        .then((data) => {
+        response.success(req, res, data, 200);
+      })
+      .catch(next);
+  }
+
+  function getCampoUser(req, res, next) {
+    Controller
+        .getCampoCategoria(req.query.user)
         .then((data) => {
         response.success(req, res, data, 200);
       })

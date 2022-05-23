@@ -59,11 +59,16 @@ module.exports = function (injectedStore) {
         return injectedStore.getTipoCategoria(TABLA, tipo, categoria);
     }
 
+    function getCampoUser(user) {
+        return injectedStore.getcampo(TABLA, user , 'user')
+    }
+
     return {
         list,
         upsert,
         getCampoCategoria,
         getCampoTipo,
-        getTipoCategoria
+        getTipoCategoria,
+        getCampoUser
     };
 }
