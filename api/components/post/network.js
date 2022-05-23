@@ -58,7 +58,7 @@ function upsert(req, res, next) {
 
   function getCampoUser(req, res, next) {
     Controller
-        .getCampoCategoria(req.query.user)
+        .getCampoUser(req.query.user)
         .then((data) => {
         response.success(req, res, data, 200);
       })
