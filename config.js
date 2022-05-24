@@ -1,6 +1,7 @@
+require('dotenv').config();
 module.exports = {
     api: {
-        port: process.env.HTTPS_PORT || process.env.HTTP_PORT,
+        port: process.env.HTTP_PORT || 3000,
     },
     jwt: {
         secret: process.env.JWT_SECRET || 'kaarstthenn',
