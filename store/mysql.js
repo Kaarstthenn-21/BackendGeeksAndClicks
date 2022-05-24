@@ -106,6 +106,16 @@ function update(table, data) {
     })
 }
 
+function getCountLike(table, id) {
+    console.log(`SELECT COUNT(*) FROM ${table} WHERE post='${id}'`);
+    return new Promise((resolve, reject) => {
+        connection.query(`SELECT COUNT(*) FROM ${table} WHERE post='${id}'`, (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+        });
+    })
+}
+
 function query(table, query, join) {
     let joinQuery = '';
     if (join) {
@@ -115,6 +125,7 @@ function query(table, query, join) {
     }
 
     return new Promise((resolve, reject) => {
+        console.log(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`);
         connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`, query, (err, res) => {
             if (err) return reject(err);
             resolve(res[0] || null);
@@ -122,11 +133,38 @@ function query(table, query, join) {
     })
 }
 
+const getlike = async (table, where, join = '') => new Promise((resolve, reject) => {
+    console.log('table', table)
+    console.log('where', where)
+    console.log('join', join)
+    let joinQuery = ''
+    if (join) {
+      join.forEach((element, i) => {
+        const key = Object.keys(element)[0]
+        const val = element[key]
+        joinQuery += ` JOIN ${key} ON ${table}.${val} = ${key}.id`
+      })
+    }
+    console.log('table', table)
+    console.log('joinQuery', joinQuery)
+    console.log('where', where)
+  
+    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${'? AND '.repeat(where.length)} 1`, where, (error, data) => {
+      if (error) { return reject(error) }
+      console.log(data)
+      resolve(data)
+    })
+  })
+
+
+
 module.exports = {
     list,
     get,
     upsert,
     query,
     getcampo,
-    getTipoCategoria
+    getTipoCategoria,
+    getlike,
+    getCountLike
 }

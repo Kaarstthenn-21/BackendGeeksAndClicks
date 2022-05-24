@@ -76,7 +76,14 @@ module.exports = function (injectedStore) {
         return store.upsert(TABLA + '_follow', {
             user_from: from,
             user_to: to,
-        });
+        }, true);
+    }
+
+    function like(from, to) {
+        return store.upsert(TABLA + '_like', {
+            post_from: to,
+            user_to: from,
+        }, true);
     }
 
     async function following(user){
@@ -86,7 +93,14 @@ module.exports = function (injectedStore) {
         return await store.query(TABLA+'_follow',query,join);
     }
 
+    async function likes(post){
+        const join={}
+        join['post']='post_from';//{user:'user_to'}
+        const query={post_from:post};
+        return await store.query(TABLA+'_like',query,join);
+    }
 
 
-    return { list, get, upsert, remove, follow,following,getUserName,};
+
+    return { list, get, upsert, remove, follow,following,getUserName,like,likes, };
 };

@@ -12,6 +12,10 @@ module.exports = function checkAuth(action) {
                 auth.check.logged(req);
                 next();
                 break;
+            case 'like':
+                auth.check.logged(req);
+                next();
+                break;
             default:
                 next();
         }

@@ -7,7 +7,9 @@ const router = express.Router();
 
 router.get("/", list);
 router.post("/follow/:id", secure("follow"), follow);
+router.post("/like/:id", secure("like"), like);
 router.get('/:id/followers', secure('follow'), followers);
+router.get('/:id/likes', secure('like'), likes);
 router.get("/:id", get);
 router.post("/", upsert);
 router.put("/", secure("update"), upsert);
@@ -51,6 +53,7 @@ function upsert(req, res, next) {
 // }
 
 function follow(req, res, next) {
+  console.log(req.user.id);
   controller
     .follow(req.user.id, req.params.id)
     .then((data) => {
@@ -59,8 +62,25 @@ function follow(req, res, next) {
     .catch(next);
 }
 
+function like(req, res, next) {
+  controller
+    .like(req.user.id, req.params.id)
+    .then((data) => {
+      response.success(req, res, data, 201);
+    })
+    .catch(next);
+}
+
 function followers (req, res, next) {
   controller.following(req.params.id)
+    .then((data) => {
+      response.success(req, res, data, 201)
+    })
+    .catch(next)
+}
+
+function likes (req, res, next) {
+  controller.likes(req.params.id)
     .then((data) => {
       response.success(req, res, data, 201)
     })

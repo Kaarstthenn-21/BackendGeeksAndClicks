@@ -22,6 +22,11 @@ const check = {
     logged: function (req, owner) {
         const decoded = decodeHeader(req);
     },
+    getId: (req) => {
+      const decoded = decodeHeader(req)
+      if (!decoded.id) throw error('Necesitas ingresar para seguir editar una publicación', 401)
+      return (decoded.id)
+    }
 }
 function getToken(authorization) {
     //Bearer token
