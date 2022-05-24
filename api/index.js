@@ -1,15 +1,8 @@
 // servidor
 const express = require("express");
-const fs = require('fs');
-const https = require('https');
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const config = require("../config.js");
-
-const httpsServerOptions = {
-  key: fs.readFileSync(config.certificates.KEY_PATH),
-  cert: fs.readFileSync(config.certificates.CERT_PATH),
-};
 
 const app = express();
 const cors = require("cors");
@@ -28,13 +21,6 @@ const swaggerDoc = require('./swagger.json')
 const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
 app.use(cors());
-
-const serverHttps = https.createServer(httpsServerOptions, app);
-serverHttps.listen(config.api.port, config.api.ip);
-app.use((req, res, next) => {
-  if (req.secure) next(); else res.redirect(`https://${req.headers.host}${req.url}`);
-});
-
 //File
 app.use(fileUpload({
   useTempFiles: true,
@@ -51,14 +37,11 @@ app.use('/api/post', post);
 app.use("/api/comment", comment);
 app.use('/api/rpta_comment', rpta_comment);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-
-app.get("*", function (req, res) {
+app.get("*", function(req,res){
   res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
 })
 // Middleware
 app.use(errors);
-
 app.listen(config.api.port, () => {
   console.log("Api escuchando en el puerto", config.api.port);
 });
