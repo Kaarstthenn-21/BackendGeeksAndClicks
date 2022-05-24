@@ -6,16 +6,16 @@ module.exports = {
         secret: process.env.JWT_SECRET || 'kaarstthenn',
     },
     mysql: {
-        host: process.env.MYSQL_HOST || 'localhost',        
-        user: process.env.MYSQL_USER || 'root',
-        password: process.env.MYSQL_PASS || 'root',
-        database: process.env.MYSQL_DB || 'GeeksandClicks',
-        port: process.env.PORT || '33060',
-    },
+        host: process.env.MYSQL_HOST || 'geeks-db.cjvsoudrdr7r.us-west-2.rds.amazonaws.com',        
+        user: process.env.MYSQL_USER || 'admingeeks',
+        password: process.env.MYSQL_PASS || 'geeks123',
+        database: process.env.MYSQL_DB || 'user',
     cloudinary: {
         cloud_name:'riacrdo2',
         api_key:'724884842686881',
         api_secret:'z7jsFVMQbrmnjiAArtsJ_XJoY_I',
         secure:true
-    }
+    },
+    
+
 }
