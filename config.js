@@ -1,6 +1,6 @@
 module.exports = {
     api: {
-        port: process.env.API_PORT || 3000,
+        port: process.env.HTTPS_PORT || process.env.HTTP_PORT || 3000,
     },
     jwt: {
         secret: process.env.JWT_SECRET || 'kaarstthenn',
