@@ -29,10 +29,7 @@ const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
 app.use(cors());
 
-const serverHttps = https.createServer(httpsServerOptions, app, function (req, res) {
-  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-  res.end();
-});
+const serverHttps = https.createServer(httpsServerOptions, app);
 serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
@@ -56,7 +53,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('*', function (req, res) {
   console.log(req.secure);
-  if (req.secure) {
+  if (!req.secure) {
     console.log(req.secure);
     res.redirect('https://' + req.headers.host + req.url);
   } else {
@@ -65,6 +62,3 @@ app.get('*', function (req, res) {
 });
 // Middleware
 app.use(errors);
-
-//app.listen(config.api.port,
-//});
