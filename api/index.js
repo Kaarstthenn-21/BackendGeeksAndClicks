@@ -34,7 +34,7 @@ serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
 app.use((req, res, next) => {
-  if (req.secure) next(); else res.redirect(`https://${req.headers.host}${req.url}`);
+  if (req.secure) next(); else res.redirect('https://' + req.headers.host + req.url);
 });
 
 //File
@@ -56,8 +56,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 app.get("*", function (req, res) {
-  res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
-})
+  if (!req.secure) {
+    res.redirect('https://' + req.headers.host + req.url);
+  } else {
+    res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
+  }
+});
 // Middleware
 app.use(errors);
 
