@@ -34,7 +34,7 @@ serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
 app.use((req, res, next) => {
-  if (req.secure) next(); else res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(http_port,https_port) + req.url });
+  if (req.secure) next(); else res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(80,443) + req.url });
 });
 
 //File
