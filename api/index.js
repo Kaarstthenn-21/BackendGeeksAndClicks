@@ -29,7 +29,9 @@ const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
 app.use(cors());
 
-const serverHttps = https.createServer(httpsServerOptions, app);
+const serverHttps = https.createServer(httpsServerOptions, function (req, res) {
+  res.end('secure!');
+});
 serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
