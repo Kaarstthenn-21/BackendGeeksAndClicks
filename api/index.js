@@ -29,12 +29,14 @@ const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
 app.use(cors());
 
-const serverHttps = https.createServer(httpsServerOptions, function (req, res) {
-  res.end('secure!');
-});
+const serverHttps = https.createServer(httpsServerOptions, app);
 serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
+app.use((req, res, next) => {
+  if (req.secure) next(); else res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(http_port,https_port) + req.url });
+});
+
 //File
 app.use(fileUpload({
   useTempFiles: true,
@@ -53,14 +55,11 @@ app.use('/api/rpta_comment', rpta_comment);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
-app.get('*', function (req, res) {
-  console.log(req.secure);
-  if (!req.secure) {
-    console.log(req.secure);
-    res.redirect('https://' + req.headers.host + req.url);
-  } else {
-    res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
-  }
+app.get("*", function (req, res) {
+  res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
 });
 // Middleware
 app.use(errors);
+
+//app.listen(config.api.port,
+//});
