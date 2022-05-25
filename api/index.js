@@ -33,10 +33,6 @@ const serverHttps = https.createServer(httpsServerOptions, app);
 serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
-app.use((req, res, next) => {
-  if (req.secure) next(); else res.redirect('https://' + req.headers.host + req.url);
-});
-
 //File
 app.use(fileUpload({
   useTempFiles: true,
@@ -46,6 +42,12 @@ app.use(fileUpload({
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Enabled Secure request
+app.enable('trust proxy')
+
+app.use((req, res, next) => {
+  req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+})
 //Router
 app.use("/api/user", user);
 app.use("/api/auth", auth);
@@ -55,7 +57,7 @@ app.use('/api/rpta_comment', rpta_comment);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
-app.get("*", function (req, res) {
+app.get('*', function (req, res) {
   console.log(req.secure);
   if (req.secure) {
     console.log(req.secure);
