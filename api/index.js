@@ -56,7 +56,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 app.get("*", function (req, res) {
-  if (!req.secure) {
+  console.log(req.secure);
+  if (req.secure) {
+    console.log(req.secure);
     res.redirect('https://' + req.headers.host + req.url);
   } else {
     res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
