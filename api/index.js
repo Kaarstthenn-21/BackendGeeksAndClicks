@@ -29,7 +29,10 @@ const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
 app.use(cors());
 
-const serverHttps = https.createServer(httpsServerOptions, app);
+const serverHttps = https.createServer(httpsServerOptions, app, function (req, res) {
+  res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+  res.end();
+});
 serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
@@ -42,12 +45,6 @@ app.use(fileUpload({
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Enabled Secure request
-app.enable('trust proxy')
-
-app.use((req, res, next) => {
-  req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-})
 //Router
 app.use("/api/user", user);
 app.use("/api/auth", auth);
