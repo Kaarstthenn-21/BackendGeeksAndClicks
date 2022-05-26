@@ -1,10 +1,11 @@
 // servidor
 const express = require("express");
-const fileUpload =require("express-fileupload");
+const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const config = require("../config.js");
 
 const app = express();
+const cors = require("cors");
 const user = require("./components/user/network");
 const auth = require("./components/auth/network");
 const comment = require("./components/comment/network");
@@ -17,12 +18,13 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require('./swagger.json')
 
-const swaggerDocs=swaggerJsDoc (swaggerDoc);
+const swaggerDocs = swaggerJsDoc(swaggerDoc);
 
+app.use(cors());
 //File
 app.use(fileUpload({
-  useTempFiles : true,
-  tempFileDir : './uploads'
+  useTempFiles: true,
+  tempFileDir: './uploads'
 }));
 
 app.use(bodyParser.json());
@@ -35,7 +37,9 @@ app.use('/api/post', post);
 app.use("/api/comment", comment);
 app.use('/api/rpta_comment', rpta_comment);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
+app.get("*", function(req,res){
+  res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
+})
 // Middleware
 app.use(errors);
 app.listen(config.api.port, () => {
