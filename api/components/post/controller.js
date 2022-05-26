@@ -85,8 +85,19 @@ module.exports = function (injectedStore) {
     console.log("user", user);
     console.log("post", post);
     const userLike = { user_liked: user, post };
-    store.upsert(TABLA + "_like", userLike, true);
+    return store.upsert(TABLA + "_like", userLike, true);
   };
+
+  const deletepost = async (id) => {
+    store.deleteTable(TABLA+'_like', 'post' , id );
+    return store.deleteTable(TABLA, 'id', id);
+  }
+
+  const deletePostLike = async (id1, id2) =>{
+    return store.deleteLike(TABLA+'_like' , 'user_liked' , 'post' , id1 , id2);
+  }
+
+
 
 
 
@@ -100,6 +111,8 @@ module.exports = function (injectedStore) {
     like,
     postLikers,
     postsLiked,
-    getCountLike
+    getCountLike,
+    deletepost,
+    deletePostLike
   };
 };
