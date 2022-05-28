@@ -8,10 +8,10 @@ module.exports = {
         secret: process.env.JWT_SECRET || 'kaarstthenn',
     },
     mysql: {
-        host: process.env.MYSQL_HOST || 'geeks-db.cjvsoudrdr7r.us-west-2.rds.amazonaws.com',
-        user: process.env.MYSQL_USER || 'admingeeks',
+        host: process.env.MYSQL_HOST || '127.0.0.1',
+        user: process.env.MYSQL_USER || 'root',
         password: process.env.MYSQL_PASS || 'geeks123',
-        database: process.env.MYSQL_DB || 'user'
+        database: process.env.MYSQL_DB || 'geeks'
     },
     cloudinary: {
         cloud_name: 'riacrdo2',
