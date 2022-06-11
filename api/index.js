@@ -5,6 +5,7 @@ const https = require('https');
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const config = require("../config.js");
+const path = require("path");
 
 const httpsServerOptions = {
   key: fs.readFileSync(config.certificates.KEY_PATH),
@@ -34,7 +35,7 @@ serverHttps.listen(config.api.port, config.api.ip, () => {
   console.log("Api escuchando en el puerto", config.api.port)
 });
 app.use((req, res, next) => {
-  if (req.secure) next(); else res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(80,443) + req.url });
+  if (req.secure) next(); else res.writeHead(301, { "Location": "https://" + req.headers['host'].replace(80, 443) + req.url });
 });
 
 //File
