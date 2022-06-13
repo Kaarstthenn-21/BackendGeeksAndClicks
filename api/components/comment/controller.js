@@ -1,4 +1,5 @@
 const TABLA = 'comments';
+const { nanoid } = require('nanoid');
 
 module.exports = function (injectedStore) {
     let store = injectedStore;
