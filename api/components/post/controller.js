@@ -36,6 +36,7 @@ module.exports = function (injectedStore) {
 
     if (body.video) {
       post.video = body.video;
+      post.tipo = 0
     }
 
     if (image) {
