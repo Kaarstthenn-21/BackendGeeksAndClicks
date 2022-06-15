@@ -3,6 +3,7 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const config = require("../config.js");
+const path = require("path");
 
 const app = express();
 const cors = require("cors");
@@ -29,7 +30,7 @@ app.use(fileUpload({
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(express.static(path.join(__dirname, '/public')));
 //Router
 app.use("/api/user", user);
 app.use("/api/auth", auth);
@@ -39,7 +40,7 @@ app.use('/api/rpta_comment', rpta_comment);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.get("*", function(req,res){
   res.status(404).send('Ups! Path inválido, vuelve a intentar con otra ruta');
-})
+});
 // Middleware
 app.use(errors);
 app.listen(config.api.port, () => {
