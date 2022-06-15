@@ -58,15 +58,6 @@ function get(table, id) {
     })
 }
 
-function deleteTable(table, campo, id) {
-    return new Promise((resolve, reject) => {
-        connection.query(`DELETE FROM ${table} WHERE ${campo} = '${id}'`, (err, data) => {
-            if (err) return reject(err);
-            resolve(data);
-        });
-    })
-}
-
 function getcampo(table, campo , columna) {
     return new Promise((resolve, reject) => {
         connection.query(`SELECT * FROM ${table} WHERE ${columna} = '${campo}'`, (err, data) => {
@@ -85,15 +76,6 @@ function getTipoCategoria(table, tipo, categoria) {
     })
 }
 
-function deleteLike(table, condicional1 , condicional2 , valor1, valor2) {
-    return new Promise((resolve, reject) => {
-        connection.query(`DELETE FROM ${table} WHERE ${condicional1} = '${valor1}' AND ${condicional2} = '${valor2}' `, (err, data) => {
-            if (err) return reject(err);
-            resolve(data);
-        });
-    })
-}
-
 function insert(table, data) {
     return new Promise((resolve, reject) => {
         connection.query(`INSERT INTO ${table} SET ?`, data, (err, result) => {
@@ -102,8 +84,6 @@ function insert(table, data) {
         });
     })
 }
-
-
 
 function upsert(table, data, isnuevo){
     //get(table, data.id).then(val => console.log(val));
@@ -186,7 +166,5 @@ module.exports = {
     getcampo,
     getTipoCategoria,
     getlike,
-    getCountLike,
-    deleteLike,
-    deleteTable
+    getCountLike
 }
